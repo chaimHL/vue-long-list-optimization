@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<ul id="list"></ul>
+		<script type="text/javascript">
+			const time = Date.now()
+			/**
+			 * index: 记录循环到哪了
+			 * id: 往 li 里添加的内容
+			 */
+			let index = 0, id = 0
+			function load() {
+				index += 50
+				if (index < 10000) {
+					requestAnimationFrame(() => { // 用 requestAnimationFrame（也是宏任务）代替了 setTimeout，性能更好点
+						const fragment = document.createDocumentFragment() // IE 浏览器需要使用文档碎片，一般可不用
+						for (let i = 0; i < 50; i++) {
+							const li = document.createElement('li')
+							li.innerText = id++
+							fragment.appendChild(li)
+						}
+						list.appendChild(fragment)
+					})
+					load()
+				}
+			}
+			load()
+			console.log(Date.now() - time)
+			setTimeout(() => {
+				console.log(Date.now() - time)
+			})
+		</script>
+	</body>
+</html>
